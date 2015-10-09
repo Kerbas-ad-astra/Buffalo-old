@@ -32,6 +32,15 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.1.1
+
+Bug Fixes
+- Fixed a collider issue with the Buckboard.
+- Kerbals will now orient properly when going on EVA from the crew cabin.
+- Made it easier to enter the crew cabin when climbing up the trailer hitch.
+- The Chassis Decoupler will now show up properly in the parts catalog.
+- The KAS Pipe ID labels now glow properly.
+
 0.1.0 Where The Buffalo Roam
 
 - Initial release
