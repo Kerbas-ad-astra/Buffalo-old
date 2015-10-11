@@ -32,6 +32,29 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.1.2
+
+This release fixes a number of issues that resulted from separating the Buffalo out of Pathfinder. It also introduces two new Buckboard storage containers, and a couple of new parts for the Buffalo. Finally, the Buffalo Crew Cabin and Buffalo Command Cab have been improved.
+
+New Parts
+- Added MC-2000 Buckboard and MC-3000 Buckboard. With colliders and glowing resource decals. ;)
+- Added the Auxiliary Electronic Navigator (AuxEN). In the Old West, oxen were frequently used to pull wagons. The AuxEN doesn't pull anything, but it does the driving. The probe core is the same size as a Chassis 1u, and supports RemoteTech, AntennaRange, and kOS.
+- Added an adapter that tapers from the Buffalo cab form factor to a 1.25m cylinder. 
+
+Buffalo Command cab
+- Widened the headlight beams and angled them down slightly for better ground operations.
+- You can now toggle the headlights separately from the cabin lights. Both cabin lights and headlights will turn on when you tap on the Lights button.
+
+Buffalo Crew Cab
+- Reworked the crew cab to include doors and ladders on its sides.
+- Added a small amount of inventory space.
+
+Bug Fixes
+- The Buckboard MC-1000's decal glows again.
+- Fixed file paths for several Buffalo parts so they'll show up again.
+- Moved Trailer Hitch to Utility.
+- Moved Chassis Decoupler to Structural.
+
 0.1.1
 
 Bug Fixes
