@@ -32,6 +32,34 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.1.3
+
+With this update, the Buffalo also gets some new additions; some mini RCS motors (with sound effects!) and a couple of animated arms (static animations, sorry) to help with asteroid exploration. There's also a couple of bug fixes for the Wagon and Buckboards, the graphics glitch with the crew cab has been fixed. Sorry, no custom wheels- yet.
+
+New parts
+- Added the 5-Way Mini RCS Thruster. This is particularly helpful for exploration craft maneuvering around large objects like asteroids. It even has sound effects! You can change the volume or disable the sound effects by opening the Settings window. To do that, press Mod B simultaneously (Mod is the Modifier key, which defaults to Alt on Windows).
+
+- Added the Buffalo Grappler Arm. Just like the stock Advanced Grabbing Unit, the Grappler Arm is useful for grabbing things like asteroids.
+
+- Added the Asteroid Resource Composition Scanner (ARCS). This arm works like the stock Surface Scanning Module, but only for asteroids. However, it tells you the entire composition of an asteroid instead of just its Ore content. Simply right-click on the part and click Scan Asteroid to get its composition.
+
+Buffalo Crew Cab & Wagon
+- The integrated solar panels are now more durable. If the solar panel breaks, so has your part.
+
+Buffalo Command Cab
+- Increased the crash tolerance slightly and made it consistent with the Wagon and Crew Cab.
+
+Chassis End Unit
+- Added a storage tank with some storage capacity.
+
+Buckboards
+- Buckboards show up in the Buffalo parts category again.
+
+Bug Fixes
+- Increased the Wagon's storage slot capacity to 8x8.
+- All Buckboards can now be mounted to the flatbeds.
+- You can now see out of both windows in the crew cabin from either seat.
+
 0.1.2
 
 This release fixes a number of issues that resulted from separating the Buffalo out of Pathfinder. It also introduces two new Buckboard storage containers, and a couple of new parts for the Buffalo. Finally, the Buffalo Crew Cabin and Buffalo Command Cab have been improved.
