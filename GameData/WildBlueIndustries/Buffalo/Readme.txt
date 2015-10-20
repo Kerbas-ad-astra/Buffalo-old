@@ -32,6 +32,12 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.1.4
+This update has a couple of bug fixes- gotta reduce that technical debt!
+
+- The MC-3000 now has the correct amount of KIS storage when storing something other than KIS items. NOTE: You'll need to switch our your resources for this change to take effect.
+- Fixed an issue with the AuxEN that prevented AntennaRange from working correctly.
+
 0.1.3
 
 With this update, the Buffalo also gets some new additions; some mini RCS motors (with sound effects!) and a couple of animated arms (static animations, sorry) to help with asteroid exploration. There's also a couple of bug fixes for the Wagon and Buckboards, the graphics glitch with the crew cab has been fixed. Sorry, no custom wheels- yet.
