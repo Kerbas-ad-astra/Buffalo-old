@@ -32,6 +32,25 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.1.5
+
+This update has more bug fixes and some minor tweaks.
+
+Chassis
+- Increased the Chassis 2u KIS storage to 200L.
+- Decreased the Chassis End Unit KIS storage to 80L.
+
+Crew Cab
+- Adjusted the default EVA airlock to the right side, just like the command cab.
+- Adjusted the ladder colliders to make it easier to climb up.
+
+Command Cab
+- Adjusted the ladder colliders to make it easier to climb up.
+
+Other
+- Updated to the latest version of Community Resource Pack and Module Manager.
+- Converted textures to DDS.
+
 0.1.4
 This update has a couple of bug fixes- gotta reduce that technical debt!
 
@@ -108,6 +127,7 @@ Module Manager by ialdabaot
 Community Resource Pack by RoverDude, Nertea, and the KSP community
 Portions of this codebase include source by Snjo and Swamp-IG, used under CC BY-NC SA 4.0 license
 Icons by icons8: https://icons8.com/license/
+Buffalo icon by flaticon
 Eve: Order Zero graphic courtesy of Kuzztler and used with permission.
 
 ---LICENSE---
