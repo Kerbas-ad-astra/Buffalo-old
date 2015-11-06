@@ -32,6 +32,21 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.2.0
+
+The Buffalo gets new wheels! The stock-based RoveMax M1A1 wheels were always interim placeholders, but now the Buffalo has its real wheels. The new M1A1 Mountain Goat is inspired by the wheels found on NASA’s MMSEV but they have been brought inline with the KSP art style. The current stock-based wheel will be going away. They are deprecated in this release (existing craft won’t break but you won’t find the wheels in the catalog) and it will be removed at a later date, so be sure to retrofit or retire your rovers that have the older wheels.
+
+New Parts
+- Added the M1A1 Mountain Goat. The M1A1 can switch between a wide wheelbase for normal driving, and a narrow wheelbase to get in and out of cargo bays. And to top it off, it has sound effects if you have the Wheel Sounds mod installed. Thanks for the suggestion, Supermarine! :)
+
+- Added the Tundra 200 and Tundra 400. These are conformal storage tanks for the Buffalo that are intended for aerospace craft. Unlike the Wagon, they do not expand, but you can attach other parts to them.
+
+Interim Rover Wheel
+- The existing stock-based rover wheel has been deprecated in favor of the new M1A1 Omni Wheel. Be sure to retrofit your rovers.
+
+Command Cab
+- Increased storage slots slightly.
+
 0.1.5
 
 This update has more bug fixes and some minor tweaks.
