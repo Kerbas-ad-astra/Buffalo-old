@@ -32,6 +32,18 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.2.2
+
+Flatbeds
+- Removed KIS part mount module; it was only applicable to a small number of parts.
+- You can now surface-attach parts to the flatbeds.
+
+Buckboards
+- Anybody can now stack Buckboards.
+
+Other
+- Updated to KSP 1.0.5
+
 0.2.1
 
 Bug Fixes
