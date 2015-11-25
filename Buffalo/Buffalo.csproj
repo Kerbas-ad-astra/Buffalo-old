@@ -47,12 +47,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arms\AsteroidScannerInfo.cs" />
+    <Compile Include="Utilities\HoverVTOLGUI.cs" />
+    <Compile Include="Utilities\WBIMultiEngineHover.cs" />
+    <Compile Include="Backpacks\JetWing.cs" />
+    <Compile Include="Backpacks\WBIOutback.cs" />
+    <Compile Include="Utilities\MultiModeEngineIntake.cs" />
     <Compile Include="Settings\BuffaloSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\BuffaloGameSettings.cs" />
     <Compile Include="Arms\WBIModuleAsteroidScanner.cs" />
     <Compile Include="Arms\WBIModuleGrappleNode.cs" />
-    <Compile Include="WBIModuleRotator.cs" />
+    <Compile Include="Utilities\WBIModuleRotator.cs" />
+    <Compile Include="Utilities\WBIHoverManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\WildBlueTools\WildBlueTools.csproj">
