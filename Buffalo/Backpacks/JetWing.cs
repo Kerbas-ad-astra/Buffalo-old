@@ -31,10 +31,16 @@ namespace WildBlueIndustries
         public bool primaryCheckForOxygen = false;
 
         [KSPField()]
+        public string primaryEngineFuel = "";
+
+        [KSPField()]
         public string secondaryEngineIntake = "";
 
         [KSPField()]
         public bool secondaryCheckForOxygen = false;
+
+        [KSPField()]
+        public string secondaryEngineFuel = "";
 
         [KSPField()]
         string turbineTransformNames = "TurbineFan001;TurbineFan002";
@@ -47,6 +53,7 @@ namespace WildBlueIndustries
         MultiModeEngine multiModeEngine;
         ModuleEngines primaryEngine;
         ModuleEngines secondaryEngine;
+        WBIResourceSwitcher resourceSwitcher;
 
         [KSPEvent(guiActive = true, guiName = "Switch Engine Mode", guiActiveEditor = true, guiActiveUnfocused = true, unfocusedRange = 2.0f)]
         public void ToggleMode()
@@ -76,26 +83,18 @@ namespace WildBlueIndustries
             evaKerbal = seat.Occupant.FindModuleImplementing<KerbalEVA>();
         }
 
+        /*
+        [KSPEvent(guiActive = true, guiName = "Test")]
+        public void Test()
+        {
+            FlightGlobals.ActiveVessel.ctrlState.mainThrottle = 0.3f;
+            FlightInputHandler.state.mainThrottle = 0.3f;
+        }
+         */
+
 //        public bool engineActivated;
 //        public bool sasActivated;
 //        Quaternion currentHeading;
-
-        protected bool hasThrustForRCS()
-        {
-            //Check operational state
-            if (primaryEngine.isOperational == false && secondaryEngine.isOperational == false)
-                return false;
-
-            //Make sure we're not out of gas
-            else if (primaryEngine.propellantReqMet < 0.001f && secondaryEngine.propellantReqMet < 0.001f)
-                return false;
-
-            //Check thrust
-            else if (primaryEngine.finalThrust < 0.001f && secondaryEngine.finalThrust < 0.001f)
-                return false;
-
-            return true;
-        }
 
         public override void OnUpdate()
         {
@@ -115,25 +114,32 @@ namespace WildBlueIndustries
             /*
             if (Input.GetKeyDown(KeyCode.Z) && engineActivated == false)
             {
-                engine.Activate();
-                engine.currentThrottle = 1.0f;
+                primaryEngine.Activate();
+                //primaryEngine.currentThrottle = 1.0f;
                 engineActivated = true;
-//                FlightGlobals.ActiveVessel.Autopilot.Enable(VesselAutopilot.AutopilotMode.StabilityAssist);
-                currentHeading = Quaternion.LookRotation(vessel.transform.up) * Quaternion.Euler(90,0,0);
+                //wingCommander.MakeReference();
+                FlightGlobals.ActiveVessel.Autopilot.SetupModules();
+                FlightGlobals.ActiveVessel.Autopilot.SAS.ModuleSetup();
+                FlightGlobals.ActiveVessel.Autopilot.Enable(VesselAutopilot.AutopilotMode.StabilityAssist);
+//                currentHeading = Quaternion.LookRotation(vessel.transform.up) * Quaternion.Euler(90,0,0);
 //                currentHeading = FlightGlobals.ActiveVessel.Autopilot.SAS.currentRotation;
-                FlightGlobals.ActiveVessel.Autopilot.SAS.LockHeading(currentHeading, true);
-                FlightGlobals.ActiveVessel.Autopilot.SAS.SetDampingMode(true);
+//                FlightGlobals.ActiveVessel.Autopilot.SAS.LockHeading(currentHeading, true);
+//                FlightGlobals.ActiveVessel.Autopilot.SAS.SetDampingMode(true);
+                FlightGlobals.ActiveVessel.Autopilot.SAS.ConnectFlyByWire();
+                FlightGlobals.ActiveVessel.Autopilot.SAS.SetLockPitchPID(0, 0, 0, 0);
             }
 
             if (engineActivated)
             {
-                engine.currentThrottle = 1.0f;
+                //primaryEngine.currentThrottle = 1.0f;
+                FlightGlobals.ActiveVessel.ctrlState.mainThrottle = 1f;
+                FlightInputHandler.state.mainThrottle = 1f;
             }
 
             if (Input.GetKeyDown(KeyCode.X))
             {
-                engine.currentThrottle = 0f;
-                engine.Shutdown();
+                primaryEngine.currentThrottle = 0f;
+                primaryEngine.Shutdown();
                 engineActivated = false;
             }
 
@@ -180,6 +186,26 @@ namespace WildBlueIndustries
             }
         }
 
+        public override void OnSave(ConfigNode node)
+        {
+            base.OnSave(node);
+
+            node.AddValue("primaryEngineFuel", primaryEngineFuel);
+
+            node.AddValue("secondaryEngineFuel", secondaryEngineFuel);
+        }
+
+        public override void OnLoad(ConfigNode node)
+        {
+            base.OnLoad(node);
+
+            if (node.HasValue("primaryEngineFuel"))
+                primaryEngineFuel = node.GetValue("primaryEngineFuel");
+
+            if (node.HasValue("secondaryEngineFuel"))
+                secondaryEngineFuel = node.GetValue("secondaryEngineFuel");
+        }
+
         public override void OnStart(StartState state)
         {
             base.OnStart(state);
@@ -187,42 +213,13 @@ namespace WildBlueIndustries
             if (HighLogic.LoadedSceneIsEditor == false && HighLogic.LoadedSceneIsFlight == false)
                 return;
 
+            //Set landing gear action
             ModuleAnimateGeneric kickstandAnim = this.part.FindModuleImplementing<ModuleAnimateGeneric>();
             kickstandAnim.Actions[0].actionGroup = KSPActionGroup.Gear;
 
-            //Hide seat GUI
-            seat = this.part.FindModuleImplementing<KerbalSeat>();
-            seat.Events["BoardSeat"].guiActive = false;
-            seat.Events["BoardSeat"].guiActiveEditor = false;
-            seat.Events["BoardSeat"].guiActiveUnfocused = false;
-
-            //Hide probe command GUI
-            wingCommander = this.part.FindModuleImplementing<ModuleCommand>();
-            wingCommander.Events["MakeReference"].guiActive = false;
-            wingCommander.Events["MakeReference"].guiActiveUnfocused = false;
-            wingCommander.Events["RenameVessel"].guiActive = false;
-
-            //Hide decoupler GUI
-            decoupler = this.part.FindModuleImplementing<ModuleDecouple>();
-            decoupler.Events["Decouple"].guiActive = false;
-            decoupler.Events["Decouple"].guiActiveEditor = false;
-            decoupler.Events["Decouple"].guiActiveUnfocused = false;
-
-            //Hide MultiModeEngine toggle button
-            multiModeEngine = this.part.FindModuleImplementing<MultiModeEngine>();
-            multiModeEngine.Events["ModeEvent"].guiActive = false;
-            multiModeEngine.Events["ModeEvent"].guiActiveEditor = false;
-            multiModeEngine.Events["ModeEvent"].guiActiveUnfocused = false;
-
-            //Hide the Close Intake button.
-            ModuleResourceIntake intake = this.part.FindModuleImplementing<ModuleResourceIntake>();
-            intake.Events["Deactivate"].guiActive = false;
-
-            //Hide RCS GUI
-            ModuleRCS rcs = this.part.FindModuleImplementing<ModuleRCS>();
-            rcs.Fields["realISP"].guiActive = false;
-            rcs.Events["Disable"].guiActive = false;
-            
+            //Setup the GUI
+            setupGUI();
+           
             //Get the primary and secondary engine
             List<ModuleEngines> engineList = this.part.FindModulesImplementing<ModuleEngines>();
             foreach (ModuleEngines engine in engineList)
@@ -233,13 +230,64 @@ namespace WildBlueIndustries
                     secondaryEngine = engine;
             }
 
-            //Get the resource switcher and change the GUI name for shortName
-            WBIResourceSwitcher resourceSwitcher = this.part.FindModuleImplementing<WBIResourceSwitcher>();
-            if (resourceSwitcher != null)
-                resourceSwitcher.Fields["shortName"].guiName = "Fuel Type";
+            //Setup the engine mode
+            setupEngineMode();
 
             //Get the transforms for the turbine blades
             getTurbineTransforms();
+
+            //Setup the intake for the current engine mode.
+            SetupIntake();
+        }
+
+        public void SetupIntake()
+        {
+            ModuleResourceIntake intake = this.part.FindModuleImplementing<ModuleResourceIntake>();
+            PartResourceDefinitionList definitions = PartResourceLibrary.Instance.resourceDefinitions;
+            PartResourceDefinition resourceDef = null;
+            PartResource resource = null;
+            string resourceName = "";
+            bool checkForOxygen = false;
+
+            if (multiModeEngine.runningPrimary)
+            {
+                resourceName = primaryEngineIntake;
+                resourceDef = ResourceHelper.DefinitionForResource(resourceName);
+                resource = this.part.Resources[resourceDef.name];
+                checkForOxygen = primaryCheckForOxygen;
+            }
+
+            else
+            {
+                resourceName = secondaryEngineIntake;
+                resourceDef = ResourceHelper.DefinitionForResource(resourceName);
+                resource = this.part.Resources[resourceDef.name];
+                checkForOxygen = secondaryCheckForOxygen;
+            }
+
+            //Change the resource to intake
+            intake.resourceName = resourceName;
+            intake.resourceDef = resourceDef;
+            intake.resourceId = resourceDef.id;
+            intake.res = resource;
+            intake.checkForOxygen = checkForOxygen;
+        }
+
+        protected bool hasThrustForRCS()
+        {
+            //Check operational state
+            if (primaryEngine.isOperational == false && secondaryEngine.isOperational == false)
+                return false;
+
+            //Make sure we're not out of gas
+            else if (primaryEngine.propellantReqMet < 0.001f && secondaryEngine.propellantReqMet < 0.001f)
+                return false;
+
+            //Check thrust
+            else if (primaryEngine.finalThrust < 0.001f && secondaryEngine.finalThrust < 0.001f)
+                return false;
+
+            return true;
         }
 
         protected void spinTurbines(ModuleEngines engine)
@@ -292,37 +340,60 @@ namespace WildBlueIndustries
 
         }
 
-        public void SetupIntake()
+        protected void setupEngineMode()
         {
+            //Auto-set the engines based upon fuel type.
+            if (resourceSwitcher.CurrentTemplateName == primaryEngineFuel)
+            {
+                if (multiModeEngine.runningPrimary == false)
+                    multiModeEngine.Events["ModeEvent"].Invoke();
+            }
+
+            else if (resourceSwitcher.CurrentTemplateName == secondaryEngineFuel)
+            {
+                if (multiModeEngine.runningPrimary)
+                    multiModeEngine.Events["ModeEvent"].Invoke();
+            }
+        }
+
+        protected void setupGUI()
+        {
+            //Hide seat GUI
+            seat = this.part.FindModuleImplementing<KerbalSeat>();
+            seat.Events["BoardSeat"].guiActive = false;
+            seat.Events["BoardSeat"].guiActiveEditor = false;
+            seat.Events["BoardSeat"].guiActiveUnfocused = false;
+
+            //Hide probe command GUI
+            wingCommander = this.part.FindModuleImplementing<ModuleCommand>();
+            wingCommander.Events["MakeReference"].guiActive = false;
+            wingCommander.Events["MakeReference"].guiActiveUnfocused = false;
+            wingCommander.Events["RenameVessel"].guiActive = false;
+
+            //Hide decoupler GUI
+            decoupler = this.part.FindModuleImplementing<ModuleDecouple>();
+            decoupler.Events["Decouple"].guiActive = false;
+            decoupler.Events["Decouple"].guiActiveEditor = false;
+            decoupler.Events["Decouple"].guiActiveUnfocused = false;
+
+            //Hide MultiModeEngine toggle button
+            multiModeEngine = this.part.FindModuleImplementing<MultiModeEngine>();
+            multiModeEngine.Events["ModeEvent"].guiActive = false;
+            multiModeEngine.Events["ModeEvent"].guiActiveEditor = false;
+            multiModeEngine.Events["ModeEvent"].guiActiveUnfocused = false;
+
+            //Hide the Close Intake button.
             ModuleResourceIntake intake = this.part.FindModuleImplementing<ModuleResourceIntake>();
-            PartResourceDefinitionList definitions = PartResourceLibrary.Instance.resourceDefinitions;
-            PartResourceDefinition resourceDef = null;
-            PartResource resource = null;
-            string resourceName = "";
-            bool checkForOxygen = false;
+            intake.Events["Deactivate"].guiActive = false;
 
-            if (multiModeEngine.runningPrimary)
-            {
-                resourceName = primaryEngineIntake;
-                resourceDef = ResourceHelper.DefinitionForResource(resourceName);
-                resource = this.part.Resources[resourceDef.name];
-                checkForOxygen = primaryCheckForOxygen;
-            }
+            //Hide RCS GUI
+            ModuleRCS rcs = this.part.FindModuleImplementing<ModuleRCS>();
+            rcs.Fields["realISP"].guiActive = false;
+            rcs.Events["Disable"].guiActive = false;
 
-            else
-            {
-                resourceName = secondaryEngineIntake;
-                resourceDef = ResourceHelper.DefinitionForResource(resourceName);
-                resource = this.part.Resources[resourceDef.name];
-                checkForOxygen = secondaryCheckForOxygen;
-            }
-
-            //Change the resource to intake
-            intake.resourceName = resourceName;
-            intake.resourceDef = resourceDef;
-            intake.resourceId = resourceDef.id;
-            intake.res = resource;
-            intake.checkForOxygen = checkForOxygen;
+            //Set fuel type
+            resourceSwitcher = this.part.FindModuleImplementing<WBIResourceSwitcher>();
+            resourceSwitcher.Fields["shortName"].guiName = "Fuel Type";
         }
 
     }

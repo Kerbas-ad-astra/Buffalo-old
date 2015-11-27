@@ -21,40 +21,72 @@ namespace WildBlueIndustries
 {
     class HoverVTOLGUI : Window<HoverVTOLGUI>
     {
-        public WBIHoverManager hoverManager;
+        public WBIVTOLManager vtolManager;
+        Texture settingsIcon;
+        HoverControlSetupGUI hoverSetupGUI;
 
-        public HoverVTOLGUI() :
-        base("", 300, 10)
+        public HoverVTOLGUI(string title = "", int height = 15, int width = 310) :
+        base(title, width, height)
         {
             Resizable = false;
+            settingsIcon = GameDatabase.Instance.GetTexture("WildBlueIndustries/Buffalo/Icons/Gear", false);
+        }
+
+        public override void SetVisible(bool newValue)
+        {
+            base.SetVisible(newValue);
+
+            if (hoverSetupGUI == null)
+            {
+                hoverSetupGUI = new HoverControlSetupGUI();
+                hoverSetupGUI.vtolManager = this.vtolManager;
+            }
         }
 
         protected override void DrawWindowContents(int windowId)
         {
             GUILayout.BeginVertical();
-            GUILayout.Label(string.Format("<color=white>Vertical Speed: {0:f2}m/s</color>", hoverManager.vessel.verticalSpeed)); 
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label(string.Format("<color=white>Vertical Speed: {0:f2}m/s</color>", vtolManager.vessel.verticalSpeed));
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button(settingsIcon, new GUILayoutOption[] { GUILayout.Width(24), GUILayout.Height(24) }))
+                hoverSetupGUI.SetVisible(true);
+            GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
 
-            if (hoverManager.hoverActive)
+            GUILayout.BeginVertical();
+            if (vtolManager.hoverActive)
             {
                 if (GUILayout.Button("<color=yellow>HOVR</color>\r\n"))
-                    hoverManager.ToggleHover();
+                    vtolManager.ToggleHover();
             }
             else
             {
                 if (GUILayout.Button("HOVR\r\n"))
-                    hoverManager.ToggleHover();
+                    vtolManager.ToggleHover();
             }
+            GUILayout.Label(vtolManager.codeToggleHover.ToString());
+            GUILayout.EndVertical();
 
+            GUILayout.BeginVertical();
             if (GUILayout.Button("VSPD\r\n+"))
-                hoverManager.IncreaseVSpeed();
+                vtolManager.IncreaseVSpeed();
+            GUILayout.Label(vtolManager.codeIncreaseVSpeed.ToString());
+            GUILayout.EndVertical();
 
+            GUILayout.BeginVertical();
             if (GUILayout.Button("VSPD\r\n0"))
-                hoverManager.KillVSpeed();
+                vtolManager.KillVSpeed();
+            GUILayout.Label(vtolManager.codeZeroVSpeed.ToString());
+            GUILayout.EndVertical();
 
+            GUILayout.BeginVertical();
             if (GUILayout.Button("VSPD\r\n-"))
-                hoverManager.DecreaseVSpeed();
+                vtolManager.DecreaseVSpeed();
+            GUILayout.Label(vtolManager.codeDecreaseVSpeed.ToString());
+            GUILayout.EndVertical();
 
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();

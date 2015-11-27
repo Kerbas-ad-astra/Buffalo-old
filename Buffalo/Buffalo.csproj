@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arms\AsteroidScannerInfo.cs" />
+    <Compile Include="Utilities\HoverControlSetupGUI.cs" />
     <Compile Include="Utilities\HoverVTOLGUI.cs" />
     <Compile Include="Utilities\WBIMultiEngineHover.cs" />
     <Compile Include="Backpacks\JetWing.cs" />
@@ -58,7 +59,7 @@
     <Compile Include="Arms\WBIModuleAsteroidScanner.cs" />
     <Compile Include="Arms\WBIModuleGrappleNode.cs" />
     <Compile Include="Utilities\WBIModuleRotator.cs" />
-    <Compile Include="Utilities\WBIHoverManager.cs" />
+    <Compile Include="Utilities\WBIVTOLManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\WildBlueTools\WildBlueTools.csproj">

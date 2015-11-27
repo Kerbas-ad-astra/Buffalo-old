@@ -32,6 +32,19 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.2.4 Flight by Erik Groysman
+This update has some minor tweaks and bug fixes to the JetWing. It is still experimental but the flight controls are a little easier to use.
+
+JetWing
+- When you load the flight scene, the JetWing will look at what fuel you're using and set up the engine mode automatically.
+- Improved the jet flame effects for liquid fuel mode.
+- You can now re-bind the hover control keys. Simply right-click on the wing, click "Show GUI" to display the on-screen hover controls, and click the gear button to display the hover controls keyboard mapper.
+- Moved center of thrust a little lower to make the wing a bit easier to fly.
+- JetWing's art assets and config files are now in the Buffalo/Parts/JetWing folder. You can safely delete all other folders in the Buffalo/Parts folder as well as the Buffalo/Spaces folder and Buffalo/Assets folder if all you want is the JetWing.
+
+Outback
+- The Outback's art assets and part file are now self-contained in the Buffalo/Parts/Outback folder.
+
 0.2.3 Believe it or Not
 The Greatest American Hero Theme Song - Believe it or Not 
 

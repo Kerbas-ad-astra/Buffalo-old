@@ -64,14 +64,15 @@ namespace WildBlueIndustries
                 DeactivateHover();
         }
 
-        /*
-        [KSPEvent(guiActive = true, guiName = "Test")]
-        public void Test()
+        public void SetHoverMode(bool isActive)
         {
-            FlightGlobals.ActiveVessel.ctrlState.mainThrottle = 0.3f;
-            FlightInputHandler.state.mainThrottle = 0.3f;
+            hoverActive = isActive;
+
+            if (hoverActive)
+                ActivateHover();
+            else
+                DeactivateHover();
         }
-         */
 
         [KSPEvent(guiActive = true, guiName = "Vertical Speed +")]
         public void IncreaseVSpeed()
@@ -114,7 +115,7 @@ namespace WildBlueIndustries
         [KSPEvent(guiActive = true, guiName = "Show GUI")]
         public void ShowGUI()
         {
-            WBIHoverManager.Instance.ShowGUI();
+            WBIVTOLManager.Instance.ShowGUI();
         }
 
         public void SetGUIVisible(bool isVisible)
@@ -216,32 +217,6 @@ namespace WildBlueIndustries
                         SetMinMaxThrust();
                     }
                 }
-
-                /*
-                //Hover controls
-                if (useHardCodedButtons)
-                {
-                    if (Input.GetKeyDown(KeyCode.PageUp))
-                    {
-                        verticalSpeed += verticalSpeedIncrements;
-                        printSpeed();
-                    }
-                    if (Input.GetKeyDown(KeyCode.PageDown))
-                    {
-                        verticalSpeed -= verticalSpeedIncrements;
-                        printSpeed();
-                    }
-                    if (Input.GetKeyDown(KeyCode.Delete))
-                    {
-                        verticalSpeed = 0f;
-                        printSpeed();
-                    }
-                    if (Input.GetKeyDown(KeyCode.Insert))
-                    {
-                        ToggleHoverMode();
-                    }
-                }
-                 */
 
                 //Monitor the throttle
                 if (FlightInputHandler.state.mainThrottle <= 0.001f && hoverActive)
