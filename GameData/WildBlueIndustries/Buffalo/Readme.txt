@@ -32,6 +32,130 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.2.4 Flight by Erik Groysman
+This update has some minor tweaks and bug fixes to the JetWing. It is still experimental but the flight controls are a little easier to use.
+
+JetWing
+- When you load the flight scene, the JetWing will look at what fuel you're using and set up the engine mode automatically.
+- Improved the jet flame effects for liquid fuel mode.
+- You can now re-bind the hover control keys. Simply right-click on the wing, click "Show GUI" to display the on-screen hover controls, and click the gear button to display the hover controls keyboard mapper.
+- Moved center of thrust a little lower to make the wing a bit easier to fly.
+- JetWing's art assets and config files are now in the Buffalo/Parts/JetWing folder. You can safely delete all other folders in the Buffalo/Parts folder as well as the Buffalo/Spaces folder and Buffalo/Assets folder if all you want is the JetWing.
+
+Outback
+- The Outback's art assets and part file are now self-contained in the Buffalo/Parts/Outback folder.
+
+0.2.3 Believe it or Not
+The Greatest American Hero Theme Song - Believe it or Not 
+
+Now you can fly around any planet that has an atmosphere with a personal jet-powered wing! It works similarly to a command seat; just drop it on the ground (be careful, some terrain is explosive), right-click to board it, then rotate upright. Alternately, bolt it to the side of a craft, board, and decouple. The wing can be used on any planet with an atmosphere thanks to its monopropellant-powered jet engines. Just don't expect terrific range, unless you switch to liquid fuel and fly in an oxygenated atmosphere like Kerbin or Laythe. JetWing is inspired by JetMan Yves Rossy and the defunct KerbolQuest winged jetpack. The JetWing and its accessories work best with Kerbal Inventory System and either GoodSpeed Fuel Pump or TAC Fuel Balancer.
+
+In addition to the Jetwing, this release also introduces the M1A2 Grizzly, a larger wheel than the Mountain Goat that has a wider wheelbase and better traction. This all comes at the expense of not being able to enter and exit Mk3 cargo bays, however.
+
+Finally, the Outback is now included with the Buffalo MSEV. The Outback is a small backpack that can store a small amount of a variety of different resources. It requires Kerbal Inventory System, but it's handy for those pesky repair missions and can be attached to the JetWing.
+
+New Parts
+- Added the M1A2 Grizzly.
+- Added the JetWing.
+- Added the JetWing Drop Tank. Works great with Good Speed Fuel Pump or TAC Fuel Balancer.
+- Added the JetWing Parachute. Like the Outback, it can be attached to the JetWing.
+- Added the JetWing Cargo Pallet. Mount these to the wing's hardpoints and you can surface-attach small items.
+
+JetWing Flight controls
+Insert: Toggle VTOL mode
+PageUp: Increase vertical speed
+PageDown: Decrease vertical speed
+Delete: Reset vertical speed to zero
+Gear: Toggle kickstand
+
+Outback
+- Moved the Outback from Pathfinder to the Buffalo category.
+
+0.2.2
+
+Flatbeds
+- Removed KIS part mount module; it was only applicable to a small number of parts.
+- You can now surface-attach parts to the flatbeds.
+
+Buckboards
+- Anybody can now stack Buckboards.
+
+Other
+- Updated to KSP 1.0.5
+
+0.2.1
+
+Bug Fixes
+- Added collider to broken wheel mesh on the M1A1.
+
+0.2.0
+
+The Buffalo gets new wheels! The stock-based RoveMax M1A1 wheels were always interim placeholders, but now the Buffalo has its real wheels. The new M1A1 Mountain Goat is inspired by the wheels found on NASA’s MMSEV but they have been brought inline with the KSP art style. The current stock-based wheel will be going away. They are deprecated in this release (existing craft won’t break but you won’t find the wheels in the catalog) and it will be removed at a later date, so be sure to retrofit or retire your rovers that have the older wheels.
+
+New Parts
+- Added the M1A1 Mountain Goat. The M1A1 can switch between a wide wheelbase for normal driving, and a narrow wheelbase to get in and out of cargo bays. And to top it off, it has sound effects if you have the Wheel Sounds mod installed. Thanks for the suggestion, Supermarine! :)
+
+- Added the Tundra 200 and Tundra 400. These are conformal storage tanks for the Buffalo that are intended for aerospace craft. Unlike the Wagon, they do not expand, but you can attach other parts to them.
+
+Interim Rover Wheel
+- The existing stock-based rover wheel has been deprecated in favor of the new M1A1 Omni Wheel. Be sure to retrofit your rovers.
+
+Command Cab
+- Increased storage slots slightly.
+
+0.1.5
+
+This update has more bug fixes and some minor tweaks.
+
+Chassis
+- Increased the Chassis 2u KIS storage to 200L.
+- Decreased the Chassis End Unit KIS storage to 80L.
+
+Crew Cab
+- Adjusted the default EVA airlock to the right side, just like the command cab.
+- Adjusted the ladder colliders to make it easier to climb up.
+
+Command Cab
+- Adjusted the ladder colliders to make it easier to climb up.
+
+Other
+- Updated to the latest version of Community Resource Pack and Module Manager.
+- Converted textures to DDS.
+
+0.1.4
+This update has a couple of bug fixes- gotta reduce that technical debt!
+
+- The MC-3000 now has the correct amount of KIS storage when storing something other than KIS items. NOTE: You'll need to switch our your resources for this change to take effect.
+- Fixed an issue with the AuxEN that prevented AntennaRange from working correctly.
+
+0.1.3
+
+With this update, the Buffalo also gets some new additions; some mini RCS motors (with sound effects!) and a couple of animated arms (static animations, sorry) to help with asteroid exploration. There's also a couple of bug fixes for the Wagon and Buckboards, the graphics glitch with the crew cab has been fixed. Sorry, no custom wheels- yet.
+
+New parts
+- Added the 5-Way Mini RCS Thruster. This is particularly helpful for exploration craft maneuvering around large objects like asteroids. It even has sound effects! You can change the volume or disable the sound effects by opening the Settings window. To do that, press Mod B simultaneously (Mod is the Modifier key, which defaults to Alt on Windows).
+
+- Added the Buffalo Grappler Arm. Just like the stock Advanced Grabbing Unit, the Grappler Arm is useful for grabbing things like asteroids.
+
+- Added the Asteroid Resource Composition Scanner (ARCS). This arm works like the stock Surface Scanning Module, but only for asteroids. However, it tells you the entire composition of an asteroid instead of just its Ore content. Simply right-click on the part and click Scan Asteroid to get its composition.
+
+Buffalo Crew Cab & Wagon
+- The integrated solar panels are now more durable. If the solar panel breaks, so has your part.
+
+Buffalo Command Cab
+- Increased the crash tolerance slightly and made it consistent with the Wagon and Crew Cab.
+
+Chassis End Unit
+- Added a storage tank with some storage capacity.
+
+Buckboards
+- Buckboards show up in the Buffalo parts category again.
+
+Bug Fixes
+- Increased the Wagon's storage slot capacity to 8x8.
+- All Buckboards can now be mounted to the flatbeds.
+- You can now see out of both windows in the crew cabin from either seat.
+
 0.1.2
 
 This release fixes a number of issues that resulted from separating the Buffalo out of Pathfinder. It also introduces two new Buckboard storage containers, and a couple of new parts for the Buffalo. Finally, the Buffalo Crew Cabin and Buffalo Command Cab have been improved.
@@ -74,6 +198,7 @@ Module Manager by ialdabaot
 Community Resource Pack by RoverDude, Nertea, and the KSP community
 Portions of this codebase include source by Snjo and Swamp-IG, used under CC BY-NC SA 4.0 license
 Icons by icons8: https://icons8.com/license/
+Buffalo icon by flaticon
 Eve: Order Zero graphic courtesy of Kuzztler and used with permission.
 
 ---LICENSE---
