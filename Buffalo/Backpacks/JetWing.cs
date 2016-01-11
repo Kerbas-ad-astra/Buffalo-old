@@ -22,30 +22,11 @@ namespace WildBlueIndustries
     class JetWing : PartModule
     {
         [KSPField()]
-        public float ecGenerated = 1.0f;
-
-        [KSPField()]
-        public string primaryEngineIntake = "";
-
-        [KSPField()]
-        public bool primaryCheckForOxygen = false;
-
-        [KSPField()]
         public string primaryEngineFuel = "";
-
-        [KSPField()]
-        public string secondaryEngineIntake = "";
-
-        [KSPField()]
-        public bool secondaryCheckForOxygen = false;
 
         [KSPField()]
         public string secondaryEngineFuel = "";
 
-        [KSPField()]
-        string turbineTransformNames = "TurbineFan001;TurbineFan002";
-
-        List<Transform> turbineTransforms;
         KerbalSeat seat;
         ModuleCommand wingCommander;
         KerbalEVA evaKerbal;
@@ -54,16 +35,7 @@ namespace WildBlueIndustries
         ModuleEngines primaryEngine;
         ModuleEngines secondaryEngine;
         WBIResourceSwitcher resourceSwitcher;
-
-        [KSPEvent(guiActive = true, guiName = "Switch Engine Mode", guiActiveEditor = true, guiActiveUnfocused = true, unfocusedRange = 2.0f)]
-        public void ToggleMode()
-        {
-            //Toggle the mode
-            multiModeEngine.Events["ModeEvent"].Invoke();
-
-            //Setup the intake
-            SetupIntake();
-        }
+        WBIMultiEngineHover hoverEngine;
 
         [KSPEvent(guiActive = true, guiName = "Decouple")]
         public void Decoupler()
@@ -159,53 +131,6 @@ namespace WildBlueIndustries
              */
         }
 
-        public override void OnFixedUpdate()
-        {
-            base.OnFixedUpdate();
-            float ecToGenerate = ecGenerated * TimeWarp.fixedDeltaTime;
-
-            if (HighLogic.LoadedSceneIsFlight == false)
-                return;
-
-            //Generate electricty; for some reason the ModuleAlternator wasn't working so we'll do it ourselves.
-            if (multiModeEngine.runningPrimary)
-            {
-                if (primaryEngine.isOperational)
-                    this.part.RequestResource("ElectricCharge", -ecToGenerate * primaryEngine.currentThrottle);
-
-                //Spin the turbines too
-                spinTurbines(primaryEngine);
-            }
-            else
-            {
-                if (secondaryEngine.isOperational)
-                    this.part.RequestResource("ElectricCharge", -ecToGenerate * secondaryEngine.currentThrottle);
-
-                //Spin the turbines too
-                spinTurbines(secondaryEngine);
-            }
-        }
-
-        public override void OnSave(ConfigNode node)
-        {
-            base.OnSave(node);
-
-            node.AddValue("primaryEngineFuel", primaryEngineFuel);
-
-            node.AddValue("secondaryEngineFuel", secondaryEngineFuel);
-        }
-
-        public override void OnLoad(ConfigNode node)
-        {
-            base.OnLoad(node);
-
-            if (node.HasValue("primaryEngineFuel"))
-                primaryEngineFuel = node.GetValue("primaryEngineFuel");
-
-            if (node.HasValue("secondaryEngineFuel"))
-                secondaryEngineFuel = node.GetValue("secondaryEngineFuel");
-        }
-
         public override void OnStart(StartState state)
         {
             base.OnStart(state);
@@ -232,45 +157,6 @@ namespace WildBlueIndustries
 
             //Setup the engine mode
             setupEngineMode();
-
-            //Get the transforms for the turbine blades
-            getTurbineTransforms();
-
-            //Setup the intake for the current engine mode.
-            SetupIntake();
-        }
-
-        public void SetupIntake()
-        {
-            ModuleResourceIntake intake = this.part.FindModuleImplementing<ModuleResourceIntake>();
-            PartResourceDefinitionList definitions = PartResourceLibrary.Instance.resourceDefinitions;
-            PartResourceDefinition resourceDef = null;
-            PartResource resource = null;
-            string resourceName = "";
-            bool checkForOxygen = false;
-
-            if (multiModeEngine.runningPrimary)
-            {
-                resourceName = primaryEngineIntake;
-                resourceDef = ResourceHelper.DefinitionForResource(resourceName);
-                resource = this.part.Resources[resourceDef.name];
-                checkForOxygen = primaryCheckForOxygen;
-            }
-
-            else
-            {
-                resourceName = secondaryEngineIntake;
-                resourceDef = ResourceHelper.DefinitionForResource(resourceName);
-                resource = this.part.Resources[resourceDef.name];
-                checkForOxygen = secondaryCheckForOxygen;
-            }
-
-            //Change the resource to intake
-            intake.resourceName = resourceName;
-            intake.resourceDef = resourceDef;
-            intake.resourceId = resourceDef.id;
-            intake.res = resource;
-            intake.checkForOxygen = checkForOxygen;
         }
 
         protected bool hasThrustForRCS()
@@ -288,56 +174,6 @@ namespace WildBlueIndustries
                 return false;
 
             return true;
-        }
-
-        protected void spinTurbines(ModuleEngines engine)
-        {
-            foreach (Transform turbineTransform in turbineTransforms)
-            {
-                turbineTransform.Rotate(0, 0, -30f * engine.currentThrottle);
-            }
-        }
-
-        protected void getTurbineTransforms()
-        {
-            if (string.IsNullOrEmpty(turbineTransformNames))
-                return;
-
-            char[] delimiters = { ';' };
-            string[] transformNames = turbineTransformNames.Replace(" ", "").Split(delimiters);
-
-            //Sanity checks
-            if (transformNames == null || transformNames.Length == 0)
-            {
-                Debug.Log("transformNames are null");
-                return;
-            }
-
-            Transform[] targets;
-
-            //Sanity checks
-            if (transformNames == null || transformNames.Length == 0)
-            {
-                Debug.Log("transformNames are null");
-                return;
-            }
-
-            //Go through all the named panels and find their transforms.
-            turbineTransforms = new List<Transform>();
-            foreach (string transformName in transformNames)
-            {
-                //Get the targets
-                targets = part.FindModelTransforms(transformName);
-                if (targets == null)
-                {
-                    Debug.Log("No targets found for " + transformName);
-                    continue;
-                }
-
-                foreach (Transform target in targets)
-                    turbineTransforms.Add(target);
-            }
-
         }
 
         protected void setupEngineMode()
@@ -390,6 +226,10 @@ namespace WildBlueIndustries
             ModuleRCS rcs = this.part.FindModuleImplementing<ModuleRCS>();
             rcs.Fields["realISP"].guiActive = false;
             rcs.Events["Disable"].guiActive = false;
+
+            //Hide hover engine gui
+            hoverEngine = this.part.FindModuleImplementing<WBIMultiEngineHover>();
+            hoverEngine.SetGUIVisible(false);
 
             //Set fuel type
             resourceSwitcher = this.part.FindModuleImplementing<WBIResourceSwitcher>();

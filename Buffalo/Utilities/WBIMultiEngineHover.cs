@@ -21,6 +21,24 @@ namespace WildBlueIndustries
 {
     public class WBIMultiEngineHover : PartModule
     {
+        [KSPField()]
+        public float ecGenerated = 1.0f;
+
+        [KSPField()]
+        public string primaryEngineIntake = "";
+
+        [KSPField()]
+        public bool primaryCheckForOxygen = false;
+
+        [KSPField()]
+        public string secondaryEngineIntake = "";
+
+        [KSPField()]
+        public bool secondaryCheckForOxygen = false;
+
+        [KSPField()]
+        public string turbineTransformNames = "";
+
         [KSPField]
         public float verticalSpeedIncrements = 1f;
 
@@ -39,20 +57,28 @@ namespace WildBlueIndustries
         [KSPField(isPersistant = true)]
         public bool maxThrustFetched = false;
 
-        [KSPField]
-        public bool useHardCodedButtons = true;
-
         [KSPField(isPersistant = true)]
         private bool runningPrimary;
 
-        private ModuleEngines primaryEngine;
-        private ModuleEngines secondaryEngine;
-        private ModuleEngines currentEngine;
-        private MultiModeEngine multiModeEngine;
-        private float currentThrustNormalized = 0f;
-        private float targetThrustNormalized = 0f;
-        private float minThrust = 0f;
-        private bool guiVisible = false;
+        protected List<Transform> turbineTransforms;
+        protected ModuleEngines primaryEngine;
+        protected ModuleEngines secondaryEngine;
+        protected ModuleEngines currentEngine;
+        protected MultiModeEngine multiModeEngine;
+        protected float currentThrustNormalized = 0f;
+        protected float targetThrustNormalized = 0f;
+        protected float minThrust = 0f;
+        protected bool guiVisible = true;
+
+        [KSPEvent(guiActive = true, guiName = "Switch Engine Mode", guiActiveEditor = true, guiActiveUnfocused = true, unfocusedRange = 2.0f)]
+        public void ToggleMode()
+        {
+            //Toggle the mode
+            multiModeEngine.Events["ModeEvent"].Invoke();
+
+            //Setup the intake
+            SetupIntake();
+        }
 
         [KSPEvent(guiActive = true, guiName = "Toggle Hover")]
         public void ToggleHoverMode()
@@ -166,41 +192,26 @@ namespace WildBlueIndustries
 
                 //Set gui visible state
                 SetGUIVisible(guiVisible);
+
+                //Get the transforms for the turbine blades
+                getTurbineTransforms();
+
+                //Setup the intake for the current engine mode.
+                SetupIntake();
             }
         }
 
         public override void OnFixedUpdate()
         {
             base.OnFixedUpdate();
-            if (HighLogic.LoadedSceneIsFlight && vessel == FlightGlobals.ActiveVessel)
-            {
-                if (hoverActive)
-                {
-                    //Do we go up or down?
-                    if (vessel.verticalSpeed >= verticalSpeed)
-                        targetThrustNormalized = 0f;
-                    else if (vessel.verticalSpeed < verticalSpeed)
-                        targetThrustNormalized = 1f;
+            if (HighLogic.LoadedSceneIsFlight == false && vessel != FlightGlobals.ActiveVessel)
+                return;
 
-                    //Normalize the thrust
-                    currentThrustNormalized = Mathf.Lerp(currentThrustNormalized, targetThrustNormalized, thrustSmooth);
+            //Run the hover system
+            setHoverThrottle();
 
-                    //Calculate new thrust
-                    float newThrust = maxThrust * currentThrustNormalized;
-                    if (newThrust <= minThrust) 
-                        newThrust = minThrust + 0.001f;
-
-                    //Set the throttle based upon thrust
-                    if (currentEngine != null)
-                    {
-                        currentEngine.currentThrottle = newThrust / maxThrust;
-                    }
-                    else
-                    {
-                        Debug.Log("currentEngine is null");
-                    }
-                }
-            }
+            //Generate electricty; for some reason the ModuleAlternator wasn't working so we'll do it ourselves.
+            generateECAndSpinTurbines();
         }
 
         public override void OnUpdate()
@@ -225,6 +236,143 @@ namespace WildBlueIndustries
         }
 
         #region Helpers
+        protected void setHoverThrottle()
+        {
+            if (hoverActive)
+            {
+                //Do we go up or down?
+                if (vessel.verticalSpeed >= verticalSpeed)
+                    targetThrustNormalized = 0f;
+                else if (vessel.verticalSpeed < verticalSpeed)
+                    targetThrustNormalized = 1f;
+
+                //Normalize the thrust
+                currentThrustNormalized = Mathf.Lerp(currentThrustNormalized, targetThrustNormalized, thrustSmooth);
+
+                //Calculate new thrust
+                float newThrust = maxThrust * currentThrustNormalized;
+                if (newThrust <= minThrust)
+                    newThrust = minThrust + 0.001f;
+
+                //Set the throttle based upon thrust
+                if (currentEngine != null)
+                {
+                    currentEngine.currentThrottle = newThrust / maxThrust;
+                }
+                else
+                {
+                    Debug.Log("currentEngine is null");
+                }
+            }
+        }
+
+        protected void generateECAndSpinTurbines()
+        {
+            float ecToGenerate = ecGenerated * TimeWarp.fixedDeltaTime;
+
+            if (multiModeEngine.runningPrimary)
+            {
+                if (primaryEngine.isOperational)
+                    this.part.RequestResource("ElectricCharge", -ecToGenerate * primaryEngine.currentThrottle);
+
+                //Spin the turbines too
+                spinTurbines(primaryEngine);
+            }
+            else
+            {
+                if (secondaryEngine.isOperational)
+                    this.part.RequestResource("ElectricCharge", -ecToGenerate * secondaryEngine.currentThrottle);
+
+                //Spin the turbines too
+                spinTurbines(secondaryEngine);
+            }
+        }
+
+        protected void spinTurbines(ModuleEngines engine)
+        {
+            foreach (Transform turbineTransform in turbineTransforms)
+            {
+                turbineTransform.Rotate(0, 0, -30f * engine.currentThrottle);
+            }
+        }
+
+        protected void getTurbineTransforms()
+        {
+            if (string.IsNullOrEmpty(turbineTransformNames))
+                return;
+
+            char[] delimiters = { ';' };
+            string[] transformNames = turbineTransformNames.Replace(" ", "").Split(delimiters);
+
+            //Sanity checks
+            if (transformNames == null || transformNames.Length == 0)
+            {
+                Debug.Log("transformNames are null");
+                return;
+            }
+
+            Transform[] targets;
+
+            //Sanity checks
+            if (transformNames == null || transformNames.Length == 0)
+            {
+                Debug.Log("transformNames are null");
+                return;
+            }
+
+            //Go through all the named panels and find their transforms.
+            turbineTransforms = new List<Transform>();
+            foreach (string transformName in transformNames)
+            {
+                //Get the targets
+                targets = part.FindModelTransforms(transformName);
+                if (targets == null)
+                {
+                    Debug.Log("No targets found for " + transformName);
+                    continue;
+                }
+
+                foreach (Transform target in targets)
+                    turbineTransforms.Add(target);
+            }
+
+        }
+
+        public void SetupIntake()
+        {
+            ModuleResourceIntake intake = this.part.FindModuleImplementing<ModuleResourceIntake>();
+            if (intake == null)
+                return;
+            PartResourceDefinitionList definitions = PartResourceLibrary.Instance.resourceDefinitions;
+            PartResourceDefinition resourceDef = null;
+            PartResource resource = null;
+            string resourceName = "";
+            bool checkForOxygen = false;
+
+            if (multiModeEngine.runningPrimary)
+            {
+                resourceName = primaryEngineIntake;
+                resourceDef = ResourceHelper.DefinitionForResource(resourceName);
+                resource = this.part.Resources[resourceDef.name];
+                checkForOxygen = primaryCheckForOxygen;
+            }
+
+            else
+            {
+                resourceName = secondaryEngineIntake;
+                resourceDef = ResourceHelper.DefinitionForResource(resourceName);
+                resource = this.part.Resources[resourceDef.name];
+                checkForOxygen = secondaryCheckForOxygen;
+            }
+
+            //Change the resource to intake
+            intake.resourceName = resourceName;
+            intake.resourceDef = resourceDef;
+            intake.resourceId = resourceDef.id;
+            intake.res = resource;
+            intake.checkForOxygen = checkForOxygen;
+        }
+
         public void printSpeed()
         {
             ScreenMessages.PostScreenMessage(new ScreenMessage("Hover Climb Rate: " + verticalSpeed, 1f, ScreenMessageStyle.UPPER_CENTER));

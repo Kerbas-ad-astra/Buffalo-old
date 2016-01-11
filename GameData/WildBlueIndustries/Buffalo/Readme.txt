@@ -32,6 +32,23 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.2.5 Young Feathers
+
+New Parts
+- Added the M1A0 Bear Cub. This adorable wheel is used for small rovers.
+- Added the WJ400 Jaguar, a micro-jet engine. It's a great booster engine for weighed down JetWings.
+- Added a half-sized chassis. It has an integrated solar panel, but no KIS storage.
+- Added a quarter-sized chassis. It too has an integrated solar panel and lacks KIS storage.
+- Added the ATV Command Seat. It's just like the External Command Seat, except that it cannot be radially attached.
+
+JetWing
+- Reduced the engine ISP by half. Transcontinental flights are fun and all but you know, a wee bit OP...
+
+Wheels
+- Adjusted traction values to be more in line with stock wheels. This work is ongoing, some of the stock values don't work for these wheels. Many thanks to Taniwha for the scrips that gave me the values. :)
+- Fixed a collider issue with the Grizzly. It shouldn't drag its feet now. Thanks for your help Beeks! :)
+- Remove interim wheel
+
 0.2.4 Flight by Erik Groysman
 This update has some minor tweaks and bug fixes to the JetWing. It is still experimental but the flight controls are a little easier to use.
 
