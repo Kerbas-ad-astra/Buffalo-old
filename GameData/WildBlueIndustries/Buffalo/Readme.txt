@@ -32,6 +32,15 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.2.6
+
+Buffalo Command Cab
+- Added support for TAC-LS
+
+Buffalo Crew Cab
+- Added support for TAC-LS
+
+
 0.2.5 Young Feathers
 
 New Parts
