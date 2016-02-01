@@ -32,6 +32,9 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.2.7
+- Added support for Connected Living Spaces. Thanks for the assist, Technologicat! :)
+
 0.2.6
 
 Buffalo Command Cab
@@ -39,7 +42,6 @@ Buffalo Command Cab
 
 Buffalo Crew Cab
 - Added support for TAC-LS
-
 
 0.2.5 Young Feathers
 
