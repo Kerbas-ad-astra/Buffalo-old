@@ -32,6 +32,10 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.2.8
+- Recompiled for KSP 1.1. Many thanks and big shout out to nil2work for helping me understand the new wheel system. :)
+NOTE: The M1-A1 is no longer able to animate changing from wide to narrow wheelbase due to KSP 1.1. But it still has use for creating rovers that get in and out of the Mk3 cargo bay. To do so, take the Buffalo Half-Chassis and rotate it to become the length of a standard 1u chassis and then attach the M1-A1 to the sides. This might change in the future, we'll see. :)
+
 0.2.7
 - Added support for Connected Living Spaces. Thanks for the assist, Technologicat! :)
 
