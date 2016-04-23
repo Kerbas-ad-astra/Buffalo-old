@@ -32,6 +32,17 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.2.9
+CAUTION: Due to major changes to wheels in KSP 1.1, you will probably need to rebuild your rovers if upgrading from a previous save. Seems like such a small update, but there was a lot of effort to get it all to work. :)
+
+- Recompiled for KSP 1.1
+- Storage containers now use a new part module; you might need to hyperedit resources back in.
+- M1A1 Mountain Goats now have an eject feature. They're particularly useful for moving Pathfinder's new Multipurpose Base Module into position before discarding the wheels. By default staging is disabled to avoid /ragequit. ;)
+- Reworked the ladder animation so that they'll be angled when fully deployed. This should help kerbals get in and out of the crewed parts.
+
+KNOWN ISSUES
+- The M1-A1 is no longer able to be animated to narrow its wheelbase. This is due to the new wheel system in KSP. However, if you use the half-chassis, you can attach the Mountain Goat in such a way that your rovers can still drive out of a Mk3 cargo bay.
+
 0.2.8
 - Recompiled for KSP 1.1. Many thanks and big shout out to nil2work for helping me understand the new wheel system. :)
 NOTE: The M1-A1 is no longer able to animate changing from wide to narrow wheelbase due to KSP 1.1. But it still has use for creating rovers that get in and out of the Mk3 cargo bay. To do so, take the Buffalo Half-Chassis and rotate it to become the length of a standard 1u chassis and then attach the M1-A1 to the sides. This might change in the future, we'll see. :)
