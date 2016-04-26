@@ -32,6 +32,13 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.2.10
+- Grizzly has moved to the Advanced Motors tech node.
+- Retuned the durability and default traction of the Buffalo wheels. Thanks for the testing, Geschosskopf! :)
+
+KNOWN ISSUES
+- You're unable to surface attach parts to the command cab until you change its orientation after spawning the part. Just change the orientation, and change it back to the desired orientation as a workaround.
+
 0.2.9
 CAUTION: Due to major changes to wheels in KSP 1.1, you will probably need to rebuild your rovers if upgrading from a previous save. Seems like such a small update, but there was a lot of effort to get it all to work. :)
 
