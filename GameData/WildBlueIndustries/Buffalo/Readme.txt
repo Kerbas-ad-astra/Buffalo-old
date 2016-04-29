@@ -32,6 +32,9 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.2.11
+- Updated to KSP 1.1.1
+
 0.2.10
 - Grizzly has moved to the Advanced Motors tech node.
 - Retuned the durability and default traction of the Buffalo wheels. Thanks for the testing, Geschosskopf! :)
