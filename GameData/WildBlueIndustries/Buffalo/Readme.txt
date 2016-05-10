@@ -32,6 +32,9 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.2.13
+- Added drag cubes to all parts.
+
 0.2.12
 - Updated to KSP 1.1.2
 
