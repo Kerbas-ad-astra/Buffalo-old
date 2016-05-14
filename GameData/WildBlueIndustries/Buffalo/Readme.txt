@@ -32,6 +32,13 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.2.14
+- Fixed an issue where the Buffalo Adapter was not showing up in flight.
+- Fixed an attachment node height issue with the M1-A1.
+- Increased ElectricCharge storage to account for new KSP 1.1 wheel power requirements.
+- Added support for Kerbalism.
+- Made some minor updates to the Buffalo Crew Module IVA.
+
 0.2.13
 - Added drag cubes to all parts.
 
