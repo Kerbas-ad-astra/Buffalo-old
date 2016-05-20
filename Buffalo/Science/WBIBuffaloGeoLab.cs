@@ -25,7 +25,8 @@ namespace WildBlueIndustries
         {
             base.OnStart(state);
 
-            resourceList = ResourceMap.Instance.GetResourceItemList(HarvestTypes.Planetary, this.part.vessel.mainBody);
+            if (HighLogic.LoadedSceneIsFlight)
+                resourceList = ResourceMap.Instance.GetResourceItemList(HarvestTypes.Planetary, this.part.vessel.mainBody);
 
             setupPartModules();
             geoLabView.performBiomAnalysisDelegate = this.perfomBiomeAnalysys;
@@ -116,10 +117,13 @@ namespace WildBlueIndustries
             }
 
             //Resource list
-            if (resourceList == null)
-                resourceList = ResourceMap.Instance.GetResourceItemList(HarvestTypes.Planetary, this.part.vessel.mainBody);
-            else if (resourceList.Count == 0)
-                resourceList = ResourceMap.Instance.GetResourceItemList(HarvestTypes.Planetary, this.part.vessel.mainBody);
+            if (HighLogic.LoadedSceneIsFlight)
+            {
+                if (resourceList == null)
+                    resourceList = ResourceMap.Instance.GetResourceItemList(HarvestTypes.Planetary, this.part.vessel.mainBody);
+                else if (resourceList.Count == 0)
+                    resourceList = ResourceMap.Instance.GetResourceItemList(HarvestTypes.Planetary, this.part.vessel.mainBody);
+            }
 
             geoLabView.gps = this.gps;
             geoLabView.resourceList = this.resourceList;

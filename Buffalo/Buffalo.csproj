@@ -62,7 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arms\AsteroidScannerInfo.cs" />
-    <Compile Include="GeoLabView.cs" />
+    <Compile Include="Science\GeoLabView.cs" />
     <Compile Include="ModuleOmniWheel.cs" />
     <Compile Include="Utilities\HoverControlSetupGUI.cs" />
     <Compile Include="Utilities\HoverVTOLGUI.cs" />
@@ -77,7 +77,7 @@
     <Compile Include="Arms\WBIModuleGrappleNode.cs" />
     <Compile Include="Utilities\WBIModuleRotator.cs" />
     <Compile Include="Utilities\WBIVTOLManager.cs" />
-    <Compile Include="WBIBuffaloGeoLab.cs" />
+    <Compile Include="Science\WBIBuffaloGeoLab.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\WildBlueTools\WildBlueTools.csproj">
