@@ -7,6 +7,7 @@ using KSP.IO;
 
 namespace WildBlueIndustries
 {
+    [KSPModule("Geology Lab")]
     public class WBIBuffaloGeoLab : PartModule
     {
         const string kNoCrew = "At least one cremember must staff the lab in order to perform the analysis.";

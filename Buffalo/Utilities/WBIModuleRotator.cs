@@ -28,6 +28,7 @@ namespace WildBlueIndustries
         RotatingToMax
     }
 
+    [KSPModule("Rotator")]
     public class WBIModuleRotator : PartModule
     {
         [KSPField]

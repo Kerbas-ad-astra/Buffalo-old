@@ -32,6 +32,12 @@ If these directories already exist, then delete the existing ones before install
 
 ---REVISION HISTORY---
 
+0.2.16
+- Updated to KSP 1.1.3
+
+0.2.15
+- Fixed an issue where the crew module was not loading properly and messing up the KIS seat inventories as a result.
+
 0.2.14
 - Fixed an issue where the Buffalo Adapter was not showing up in flight.
 - Fixed an attachment node height issue with the M1-A1.
