@@ -224,12 +224,16 @@ namespace WildBlueIndustries
         {
             hoverActive = !hoverActive;
 
+            if (hoverActive)
+                FindHoverEngines(this.vessel);
+
             foreach (WBIMultiEngineHover hoverEngine in hoverEngines)
                 hoverEngine.SetHoverMode(hoverActive);
         }
 
         public void ShowGUI()
         {
+            FindHoverEngines(this.vessel);
             hoverGUI.SetVisible(true);
         }
 

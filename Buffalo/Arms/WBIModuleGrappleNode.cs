@@ -5,6 +5,7 @@ using System.Text;
 
 namespace WildBlueIndustries
 {
+    [KSPModule("Grappler")]
     class WBIModuleGrappleNode : ModuleGrappleNode
     {
         ModuleAnimateGeneric anim = null;
